@@ -99,7 +99,18 @@ const cryptoContextRules = [
   }
 ];
 
-const cryptoLibraryPattern = /\b(?:OpenSSL|libssl\d*|libcrypto\d*|BoringSSL|wolfSSL|GnuTLS|mbedTLS|cryptsetup|libgcrypt|libsodium|bcrypt|Bouncy\s?Castle)\b/i;
+const cryptoLibraryPatterns = [
+  // Java/JVM and .NET package IDs and artifact names.
+  /\b(?:org\.bouncycastle|bcprov|bcpkix|bcfips|portable[.\s]+bouncy[.\s]?castle|bouncy[.\s]?castle(?:\.cryptography)?|conscrypt|com\.google\.crypto\.tink|tink|org\.jasypt|jasypt|nimbus-jose-jwt|io\.jsonwebtoken|jjwt|com\.auth0|java-jwt|system[.\s]+identitymodel[.\s]+tokens[.\s]+jwt)\b/ig,
+  // JavaScript packages.
+  /\b(?:node-forge|crypto-js|jsrsasign|libsodium-wrappers|jsonwebtoken|tweetnacl|jose)\b/ig,
+  // Python packages.
+  /\b(?:pycryptodomex|pycryptodome|pyopenssl|pynacl|pyjwt|paramiko|cryptography)\b/ig,
+  // Go and Rust packages/crates.
+  /\b(?:golang\.org/x/crypto|x/crypto|rustls|ring)\b/ig,
+  // Native and operating-system libraries. Numeric suffixes cover names such as libssl3.
+  /\b(?:openssl|boringssl|libssl\d*|libcrypto\d*|gnutls\d*|libgcrypt\d*|nss|libsodium|wolfssl\d*|mbed[-]?tls\d*|cryptsetup|bcrypt)\b/ig
+];
 
 const miningRules = [
   {
@@ -161,8 +172,11 @@ function matchReasons(row, columns, enabled) {
     // Package fields help find crypto libraries without treating every mention in
     // arbitrary asset metadata as a library finding.
     const libraryText = packageText || findingText;
-    const libraryMatch = libraryText.match(cryptoLibraryPattern);
-    if (libraryMatch) reasons.push(`Crypto library/package reference: “${libraryMatch[0]}”`);
+    for (const pattern of cryptoLibraryPatterns) {
+      for (const libraryMatch of libraryText.matchAll(pattern)) {
+        reasons.push(`Crypto library/package reference: “${libraryMatch[0]}”`);
+      }
+    }
   }
 
   if (enabled.includes('mining')) {
