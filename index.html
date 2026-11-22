@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Filter Prisma Cloud host and image CSV reports for cryptography and cryptocurrency related findings.">
+  <title>CryptoLens — Prisma CSV Filter</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#"><span class="brand-icon">⌁</span> CryptoLens</a><span class="local"><i></i> Runs locally in your browser</span></header>
+  <main>
+    <section class="intro"><div class="eyebrow">PRISMA CLOUD · REPORT FILTER</div><h1>Find the crypto<br><span>in your cloud.</span></h1><p>Upload host and image reports. Get a focused, downloadable view of cryptography risks and cryptocurrency mining indicators.</p></section>
+    <section class="panel upload-panel" aria-labelledby="upload-title"><div class="section-heading"><div><div class="step">01 / UPLOAD</div><h2 id="upload-title">Choose your reports</h2></div><span class="privacy">Files never leave this device</span></div>
+      <div class="drop-grid">
+        <label class="dropzone" id="host-zone"><input type="file" id="host-file" accept=".csv,text/csv"><span class="file-icon">⌘</span><strong>Host report</strong><span class="file-name" id="host-name">Drop CSV here or <em>browse</em></span></label>
+        <label class="dropzone" id="image-zone"><input type="file" id="image-file" accept=".csv,text/csv"><span class="file-icon">▧</span><strong>Image report</strong><span class="file-name" id="image-name">Drop CSV here or <em>browse</em></span></label>
+      </div><div class="hint">You can upload either report or both. CSV contents are processed only in this page.</div>
+    </section>
+    <section class="panel options-panel"><div class="section-heading"><div><div class="step">02 / SCOPE</div><h2>What counts as crypto?</h2></div></div>
+      <div class="checks"><label><input type="checkbox" id="cryptography" checked><span><b>Cryptography & encryption</b><small>Weak or deprecated algorithms, TLS/SSL, certificates, key management, crypto libraries and encryption configuration.</small></span></label><label><input type="checkbox" id="mining" checked><span><b>Cryptocurrency mining</b><small>Coin miners, mining pools, wallets and related malware or unauthorized mining activity.</small></span></label></div>
+      <details><summary>How findings are matched</summary><p>We inspect every CSV field, including finding names, descriptions, package names and asset metadata. Strong indicators (such as “weak cipher”, “CVE-2023-…”, “xmrig” or “mining pool”) are included. General terms such as “crypto” or “OpenSSL” are included as supporting indicators. This is a keyword filter, not a severity assessment; review matches in context.</p></details>
+      <button id="run" class="primary" disabled>Analyze reports <span>→</span></button>
+    </section>
+    <section class="results" id="results" hidden aria-live="polite"><div class="section-heading"><div><div class="step">03 / RESULTS</div><h2>Crypto findings</h2></div><button class="secondary" id="download-all">Download combined CSV ↓</button></div><div class="stats" id="stats"></div><div id="result-cards"></div><p class="footnote">A match indicates crypto-related language in the report, not necessarily an exploitable vulnerability. Validate findings against your environment and Prisma Cloud details.</p></section>
+  </main><footer>CryptoLens <span>·</span> Client-side CSV filtering</footer><script src="app.js"></script>
+</body></html>
