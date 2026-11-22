@@ -107,7 +107,7 @@ const cryptoLibraryPatterns = [
   // Python packages.
   /\b(?:pycryptodomex|pycryptodome|pyopenssl|pynacl|pyjwt|paramiko|cryptography)\b/ig,
   // Go and Rust packages/crates.
-  /\b(?:golang\.org/x/crypto|x/crypto|rustls|ring)\b/ig,
+  /\b(?:golang\.org\/x\/crypto|x\/crypto|rustls|ring)\b/ig,
   // Native and operating-system libraries. Numeric suffixes cover names such as libssl3.
   /\b(?:openssl|boringssl|libssl\d*|libcrypto\d*|gnutls\d*|libgcrypt\d*|nss|libsodium|wolfssl\d*|mbed[-]?tls\d*|cryptsetup|bcrypt)\b/ig
 ];
